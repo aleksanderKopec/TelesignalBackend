@@ -18,6 +18,15 @@ namespace Telesignal.Services.Database.DAO
     {
         public T Delete(int id);
         public T? Get(int id);
+        public List<T> Find(Dictionary<UserAttributes, object> searchDict);
 
+    }
+
+    public enum UserAttributes
+    {
+        Id,
+        Email,
+        Profile,
+        Contacts,
     }
 }
