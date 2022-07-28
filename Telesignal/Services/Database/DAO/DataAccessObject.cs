@@ -16,9 +16,9 @@ namespace Telesignal.Services.Database.DAO
 
     public interface IDataAccessObject<T> where T : DatabaseEntity
     {
-        public T Delete(int id);
+        public T? Delete(int id);
         public T? Get(int id);
-        public List<T> Find(Dictionary<UserAttributes, object> searchDict);
+        //public List<T> Find(Dictionary<UserAttributes, object> searchDict);
 
     }
 

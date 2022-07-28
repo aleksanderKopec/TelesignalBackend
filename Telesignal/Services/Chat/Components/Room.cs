@@ -1,6 +1,6 @@
 ﻿namespace Telesignal.Services.Chat.Components
 {
-    public class Room
+    public class Room : ChatComponent
     {
     }
 }

@@ -20,10 +20,11 @@ namespace Telesignal.Services.Database.DAO
             db.SaveChanges();
         }
 
-        public User Delete(int id)
+        public User? Delete(int id)
         {
             var user = db.Users.Find(id);
-            Delete(user);
+            if (user != null)
+                Delete(user);
             return user;
         }
 
@@ -60,21 +61,21 @@ namespace Telesignal.Services.Database.DAO
         //}
 
         /// <summary>
-        /// Used to find users by 
+        /// Used to find users by attributes other than Id.
+        /// To get user by Id use Get().
         /// </summary>
-        /// <param name="searchUser"></param>
-        /// <returns></returns>
-        public List<User> Find(Dictionary<UserAttributes, object> searchUser)
+        /// <param name="searchCriteria">Dictionary containing search parameters.</param>
+        /// <returns>List of users matching search criteria</returns>
+        public List<User> Find(Dictionary<UserAttributes, object> searchCriteria)
         {
-            if (searchUser.ContainsKey(UserAttributes.Id))
-                return Get(searchUser[UserAttributes.Id]).To
             var user = db.Users.AsQueryable();
-            if (searchUser.ContainsKey(UserAttributes.Email))
-                user = user.Where(u => u.Email == searchUser[UserAttributes.Email]);
-            if (searchUser.ContainsKey(UserAttributes.Profile))
-                user = user.Where(u => u.Profile == searchUser[UserAttributes.Profile]);
-            if (searchUser.ContainsKey(UserAttributes.Contacts))
-                user = user.Where(u => u.Contacts == searchUser[UserAttributes.Contacts]);
+            if (searchCriteria.ContainsKey(UserAttributes.Email))
+                user = user.Where(u => u.Email == searchCriteria[UserAttributes.Email]);
+            if (searchCriteria.ContainsKey(UserAttributes.Profile))
+                user = user.Where(u => u.Profile == searchCriteria[UserAttributes.Profile]);
+            if (searchCriteria.ContainsKey(UserAttributes.Contacts))
+                user = user.Where(u => u.Contacts == searchCriteria[UserAttributes.Contacts]);
+            return user.ToList();
         }
 
 

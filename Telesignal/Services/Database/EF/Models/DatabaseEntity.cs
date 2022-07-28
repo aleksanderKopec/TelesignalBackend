@@ -3,7 +3,5 @@
     public abstract class DatabaseEntity
     {
         public int Id { get; set; }
-
-        public 
     }
 }
