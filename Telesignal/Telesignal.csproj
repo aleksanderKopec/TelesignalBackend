@@ -22,6 +22,26 @@
 
   <ItemGroup>
     <None Include="C:\Users\Alek\source\repos\Telesignal\Telesignal\.editorconfig" />
+    <None Remove="Common\Mappers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Common\Mappers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Common\Mappers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Common\Mappers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\Exceptions" />
+    <Folder Include="Sample\DTO" />
+    <Folder Include="Sample\Mappers" />
+    <Folder Include="Sample\Model" />
   </ItemGroup>
 
 </Project>
