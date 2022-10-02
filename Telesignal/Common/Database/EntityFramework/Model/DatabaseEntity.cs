@@ -1,7 +1,5 @@
-﻿namespace Telesignal.Common.Database.EntityFramework.Model
+﻿namespace Telesignal.Common.Database.EntityFramework.Model;
+
+public interface DatabaseEntity
 {
-    public abstract class DatabaseEntity
-    {
-        public int Id { get; set; }
-    }
 }

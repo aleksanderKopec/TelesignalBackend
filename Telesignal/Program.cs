@@ -1,6 +1,6 @@
-﻿using Telesignal.Common.Database.EntityFramework;
-using Telesignal.Sample;
-using Telesignal.Sample.Interfaces;
+﻿using Serilog;
+using Telesignal.Common.Config;
+using Telesignal.Common.Extensions;
 
 namespace Telesignal;
 
@@ -9,33 +9,37 @@ public class Program
     public static void Main(string[] args) {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
+        // Configure logging
+        var configuration = new LoggerConfiguration()
+                           .WriteTo.Console()
+                           .WriteTo.File("logs/Telesignal.log", rollingInterval: RollingInterval.Day);
+        configuration = builder.Environment.IsDevelopment()
+                            ? configuration.MinimumLevel.Debug()
+                            : configuration.MinimumLevel.Information();
+        Log.Logger = configuration.CreateLogger();
 
-        builder.Services.AddControllers();
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
-        builder.Services.AddSignalR();
-        builder.Services.AddScoped<ISampleService, SampleService>();
-        builder.Services.AddScoped<ISampleUserRepository, SampleUserRepository>();
-        builder.Services.AddScoped<DatabaseContext, DatabaseContext>();
+        try {
+            // Services configuration
+            var dbConnectionString = builder.Configuration.GetConnectionString(AppSettings.DbConnectionString);
 
+            var app = builder
+                     .ConfigureDatabase(dbConnectionString)
+                     .ConfigureServices()
+                     .ConfigureIdentityServer()
+                     .Build();
 
-        var app = builder.Build();
-
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment()) {
-            app.UseSwagger();
-            app.UseSwaggerUI();
+            app
+               .ConfigurePipeline()
+               .Run();
         }
-
-        app.UseHttpsRedirection();
-
-        app.UseAuthorization();
-
-
-        app.MapControllers();
-
-        app.Run();
+        catch (Exception ex) when (
+            ex.GetType().Name is not "StopTheHostException") // https://github.com/dotnet/runtime/issues/60600
+        {
+            Log.Fatal(ex, "Unhandled exception");
+        }
+        finally {
+            Log.Information("Shut down complete");
+            Log.CloseAndFlush();
+        }
     }
 }

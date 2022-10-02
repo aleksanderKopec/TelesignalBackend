@@ -14,9 +14,10 @@
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7022;http://localhost:5022",
+      "applicationUrl": "http://localhost:5022",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "API_SECRET": "w5G7!xjstWAeBCD6n@z1ELsm0qjTbVLc"
       }
     },
     "IIS Express": {
