@@ -7,28 +7,28 @@ namespace Telesignal.Sample;
 public class SampleUserRepository : ISampleUserRepository
 {
 
-    private DatabaseContext _context;
+    readonly private DatabaseContext _context;
     public SampleUserRepository(DatabaseContext context) {
         _context = context;
     }
 
-    public User Find(int id) {
+    public async Task<User> Create(User entity) {
         throw new NotImplementedException();
     }
 
-    public User Create(User entity) {
+    public async Task<User> Delete(User entity) {
         throw new NotImplementedException();
     }
 
-    public User Delete(User entity) {
+    public async Task<User> Delete(int id) {
         throw new NotImplementedException();
     }
 
-    public User Delete(int id) {
+    public async Task<User> Update(User entity) {
         throw new NotImplementedException();
     }
 
-    public User Update(User entity) {
-        throw new NotImplementedException();
+    public async Task<User> Find(string id) {
+        return await _context.Users.FindAsync(id);
     }
 }

@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿namespace Telesignal.Common.Database.EntityFramework.Model;
 
-namespace Telesignal.Common.Database.EntityFramework.Model;
-
-public class User : IdentityUser<int>, DatabaseEntity
+public class User : DatabaseEntity
 {
+    public string Id { get; set; }
+    public string Username { get; set; }
     /// <summary>
     ///     Email of user.
     /// </summary>
@@ -11,7 +11,7 @@ public class User : IdentityUser<int>, DatabaseEntity
     /// <summary>
     ///     Hashed password
     /// </summary>
-    public string Password { get; set; }
+    public string PasswordHash { get; set; }
     /// <summary>
     ///     Profile of user. Contains user given information.
     /// </summary>

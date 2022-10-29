@@ -1,4 +1,5 @@
-﻿using Telesignal.Sample.Interfaces;
+﻿using Telesignal.Common.Database.EntityFramework.Model;
+using Telesignal.Sample.Interfaces;
 
 namespace Telesignal.Sample;
 
@@ -10,7 +11,7 @@ public class SampleService : ISampleService
         _userRepository = repository;
     }
 
-    public string ReturnBack(string input) {
-        return input;
+    public async Task<User> GetUser(string id) {
+        return await _userRepository.Find(id);
     }
 }

@@ -18,28 +18,15 @@ public class Program
                             : configuration.MinimumLevel.Information();
         Log.Logger = configuration.CreateLogger();
 
-        try {
-            // Services configuration
-            var dbConnectionString = builder.Configuration.GetConnectionString(AppSettings.DbConnectionString);
+        var dbConnectionString = builder.Configuration.GetConnectionString(AppSettings.DbConnectionString);
 
-            var app = builder
-                     .ConfigureDatabase(dbConnectionString)
-                     .ConfigureServices()
-                     .ConfigureIdentityServer()
-                     .Build();
+        var app = builder
+                 .ConfigureDatabase(dbConnectionString)
+                 .ConfigureServices()
+                 .Build();
 
-            app
-               .ConfigurePipeline()
-               .Run();
-        }
-        catch (Exception ex) when (
-            ex.GetType().Name is not "StopTheHostException") // https://github.com/dotnet/runtime/issues/60600
-        {
-            Log.Fatal(ex, "Unhandled exception");
-        }
-        finally {
-            Log.Information("Shut down complete");
-            Log.CloseAndFlush();
-        }
+        app
+           .ConfigurePipeline()
+           .Run();
     }
 }
