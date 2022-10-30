@@ -1,11 +1,14 @@
-﻿namespace Telesignal.Common.Database.EntityFramework.Model;
+﻿using Microsoft.EntityFrameworkCore;
 
-public class User : DatabaseEntity
+namespace Telesignal.Common.Database.EntityFramework.Model;
+
+public class User : IDatabaseEntity
 {
     public string Id { get; set; }
-    public string Username { get; set; }
+
+    [Index(IsUnique = true)] public string Username { get; set; }
     /// <summary>
-    ///     Email of user.
+    ///     Email information of user.
     /// </summary>
     public Email Email { get; set; }
     /// <summary>

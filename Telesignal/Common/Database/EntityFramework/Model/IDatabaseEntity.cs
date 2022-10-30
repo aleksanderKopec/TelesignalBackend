@@ -1,5 +1,5 @@
 ﻿namespace Telesignal.Common.Database.EntityFramework.Model;
 
-public interface DatabaseEntity
+public interface IDatabaseEntity
 {
 }

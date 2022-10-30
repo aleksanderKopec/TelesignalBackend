@@ -1,3 +1,3 @@
 ﻿namespace Telesignal.Auth.DTO;
 
-public record TokenDto();
+public record TokenDto(string Token);

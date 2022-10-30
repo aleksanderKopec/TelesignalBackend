@@ -2,7 +2,7 @@
 
 namespace Telesignal.Common.Interfaces;
 
-public interface IAsyncRepository<T> where T : DatabaseEntity
+public interface IAsyncRepository<T> where T : IDatabaseEntity
 {
     Task<T> Find(string id);
 

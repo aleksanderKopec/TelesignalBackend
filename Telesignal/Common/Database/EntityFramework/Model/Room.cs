@@ -1,6 +1,6 @@
 ﻿namespace Telesignal.Common.Database.EntityFramework.Model
 {
-    public class Room : DatabaseEntity
+    public class Room : IDatabaseEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }

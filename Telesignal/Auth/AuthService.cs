@@ -1,45 +1,30 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
-using Telesignal.Auth.DTO;
+﻿using Telesignal.Auth.DTO;
 using Telesignal.Auth.Interfaces;
+using Telesignal.Auth.Interfaces.Utils;
 using Telesignal.Common.Config;
+using Telesignal.Common.Database.EntityFramework.Model;
 
 namespace Telesignal.Auth;
 
 public class AuthService : IAuthService
 {
-    private JwtConfig _jwtConfig;
-    
-    public AuthService(JwtConfig jwtConfig) {
-        _jwtConfig = jwtConfig;
+    readonly private IAuthUserRepository _authUserRepository;
+    readonly private IJwtUtils _jwtUtils;
+
+    public AuthService(JwtConfig jwtConfig, IJwtUtils jwtUtils, IAuthUserRepository authUserRepository) {
+        _jwtUtils = jwtUtils;
+        _authUserRepository = authUserRepository;
     }
 
     public async Task<IResult> Login(LoginDto loginDto) {
+        var user = new User();
         if (loginDto.Username != "username" || loginDto.Password != "password") {
             return Results.Unauthorized();
         }
+        var user = new
+        return async _jwtUtils.GetJwtToken()
+    }
 
-        return await Task.Run(() => {
-            var tokenDescriptor = new SecurityTokenDescriptor {
-                Subject = new ClaimsIdentity(new[] {
-                    new Claim("Id", Guid.NewGuid().ToString()),
-                    new Claim(JwtRegisteredClaimNames.Sub, loginDto.Username),
-                    new Claim(JwtRegisteredClaimNames.Email, loginDto.Username),
-                }),
-                Expires = DateTime.UtcNow.AddHours(JwtConfig.ExpirationHours),
-                Issuer = _jwtConfig.JwtIssuer,
-                Audience = _jwtConfig.JwtAudience,
-                SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(_jwtConfig.JwtKey),
-                    SecurityAlgorithms.HmacSha512Signature
-                )
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var stringToken = tokenHandler.WriteToken(token);
-            return Results.Ok(stringToken);
-        });
+    public async Task<IResult> Register(RegisterDto registerDto) {
     }
 }
