@@ -20,11 +20,13 @@ public class Program
 
         var dbConnectionString = builder.Configuration.GetConnectionString(AppSettings.DbConnectionString);
 
+
         var app = builder
                  .ConfigureDatabase(dbConnectionString)
+                 .ConfigureAuthentication()
+                 .ConfigureAuthorization()
                  .ConfigureServices()
                  .Build();
-
         app
            .ConfigurePipeline()
            .Run();

@@ -1,4 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Serilog;
+using Telesignal.Auth.Config;
+using Telesignal.Common.Config;
 using Telesignal.Common.Database.EntityFramework;
 using Telesignal.Sample.Config;
 
@@ -20,7 +26,36 @@ public static class HostingExtensions
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddSignalR();
+        ConfigDependencyConfiguration.AddDependencies(builder.Services);
         SampleDependencyConfiguration.AddDependencies(builder.Services);
+        AuthDependencyConfiguration.AddDependencies(builder.Services);
+        return builder;
+    }
+    
+    public static WebApplicationBuilder ConfigureAuthentication(this WebApplicationBuilder builder) {
+        var jwtAudience = builder.Configuration[AppSettings.JwtAudience];
+        var jwtIssuer = builder.Configuration[AppSettings.JwtIssuer];
+        var jwtKey = builder.Configuration[AppSettings.JwtKey];
+        builder.Services.AddAuthentication(options => {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options => {
+            options.TokenValidationParameters = new TokenValidationParameters {
+                ValidIssuer = jwtAudience,
+                ValidAudience = jwtIssuer,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = false,
+                ValidateIssuerSigningKey = false
+            };
+        });
+        return builder;
+    }
+    
+    public static WebApplicationBuilder ConfigureAuthorization(this WebApplicationBuilder builder) {
+        builder.Services.AddAuthorization();
         return builder;
     }
 
@@ -31,11 +66,10 @@ public static class HostingExtensions
                .UseSwaggerUI();
         }
 
-//        app.UseHttpsRedirection();
+        app.UseHttpsRedirection();
 //        app.UseRouting();
-        app.UseAuthentication()
-           .UseAuthorization();
-
+        app.UseAuthentication();
+        app.UseAuthorization();
         app.MapControllers();
         return app;
     }

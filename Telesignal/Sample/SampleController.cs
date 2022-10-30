@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Telesignal.Common.Database.EntityFramework.Model;
 using Telesignal.Sample.Interfaces;
 
@@ -13,14 +14,16 @@ public class SampleController : ControllerBase, ISampleController
     public SampleController(ISampleService sampleService) {
         _sampleService = sampleService;
     }
-
-    [HttpGet("/")]
-    public string Hello() {
+    
+    [Authorize]
+    [HttpGet("auth")]
+    public string HelloAuth() {
+        return "Hello world";
+    }
+    
+    [HttpGet("")]
+    public string HelloNoAuth() {
         return "Hello world";
     }
 
-    [HttpGet("/user/{id}")]
-    public async Task<User> GetUser(string id) {
-        return await _sampleService.GetUser(id);
-    }
 }
