@@ -1,8 +1,11 @@
-﻿namespace Telesignal.Common.Database.EntityFramework.Model;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Telesignal.Common.Database.EntityFramework.Model;
 
 /// <summary>
 ///     Object containing database structure of emails.
 /// </summary>
+[Index(nameof(Hash), IsUnique = true)]
 public class Email : IDatabaseEntity
 {
     public int Id { get; set; }

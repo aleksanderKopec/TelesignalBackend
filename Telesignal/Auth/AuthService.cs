@@ -1,4 +1,5 @@
-﻿using Telesignal.Auth.DTO;
+﻿using Microsoft.AspNetCore.Identity;
+using Telesignal.Auth.DTO;
 using Telesignal.Auth.Interfaces;
 using Telesignal.Auth.Interfaces.Utils;
 using Telesignal.Common.Config;
@@ -9,11 +10,16 @@ namespace Telesignal.Auth;
 public class AuthService : IAuthService
 {
     readonly private IAuthUserRepository _authUserRepository;
+    readonly private IPasswordHasher<Email> _emailHasher;
     readonly private IJwtUtils _jwtUtils;
+    readonly private IPasswordHasher<User> _passwordHasher;
 
-    public AuthService(JwtConfig jwtConfig, IJwtUtils jwtUtils, IAuthUserRepository authUserRepository) {
+    public AuthService(JwtConfig jwtConfig, IJwtUtils jwtUtils, IAuthUserRepository authUserRepository,
+                       IPasswordHasher<User> passwordHasher, IPasswordHasher<Email> emailHasher) {
         _jwtUtils = jwtUtils;
         _authUserRepository = authUserRepository;
+        _passwordHasher = passwordHasher;
+        _emailHasher = emailHasher;
     }
 
     public async Task<IResult> Login(LoginDto loginDto) {

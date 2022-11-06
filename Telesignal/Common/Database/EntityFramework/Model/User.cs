@@ -2,11 +2,12 @@
 
 namespace Telesignal.Common.Database.EntityFramework.Model;
 
+[Index(nameof(Username), IsUnique = true)]
 public class User : IDatabaseEntity
 {
     public string Id { get; set; }
 
-    [Index(IsUnique = true)] public string Username { get; set; }
+    public string Username { get; set; }
     /// <summary>
     ///     Email information of user.
     /// </summary>

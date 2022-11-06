@@ -1,5 +1,4 @@
 ﻿using Telesignal.Auth.Interfaces;
-using Telesignal.Sample.Interfaces;
 
 namespace Telesignal.Auth.Config;
 
