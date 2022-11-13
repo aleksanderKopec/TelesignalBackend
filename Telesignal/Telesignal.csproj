@@ -44,6 +44,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Chat\Config" />
+    <Folder Include="Chat\Mappers" />
+    <Folder Include="Chat\Model" />
     <Folder Include="Common\Exceptions" />
     <Folder Include="Common\Extensions" />
     <Folder Include="Sample\DTO" />
