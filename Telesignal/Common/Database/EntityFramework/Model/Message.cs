@@ -2,6 +2,7 @@
 
 public class Message : IDatabaseEntity
 {
+
     public int Id { get; init; }
     /// <summary>
     ///     Author of the message.

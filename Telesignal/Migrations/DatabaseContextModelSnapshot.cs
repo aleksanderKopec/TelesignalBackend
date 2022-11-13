@@ -17,7 +17,7 @@ namespace Telesignal.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.9")
+                .HasAnnotation("ProductVersion", "6.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -36,13 +36,16 @@ namespace Telesignal.Migrations
 
                     b.Property<string>("Hash")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Suffix")
+                    b.Property<string>("Prefix")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Hash")
+                        .IsUnique();
 
                     b.ToTable("Emails");
                 });
@@ -55,8 +58,8 @@ namespace Telesignal.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("AuthorId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -115,8 +118,11 @@ namespace Telesignal.Migrations
 
             modelBuilder.Entity("Telesignal.Common.Database.EntityFramework.Model.User", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("EmailId")
                         .HasColumnType("int");
@@ -131,12 +137,12 @@ namespace Telesignal.Migrations
                     b.Property<int?>("RoomId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -148,6 +154,9 @@ namespace Telesignal.Migrations
 
                     b.HasIndex("UserId");
 
+                    b.HasIndex("Username")
+                        .IsUnique();
+
                     b.ToTable("Users");
                 });
 
@@ -155,7 +164,9 @@ namespace Telesignal.Migrations
                 {
                     b.HasOne("Telesignal.Common.Database.EntityFramework.Model.User", "Author")
                         .WithMany()
-                        .HasForeignKey("AuthorId");
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Telesignal.Common.Database.EntityFramework.Model.Room", "Room")
                         .WithMany("Messages")

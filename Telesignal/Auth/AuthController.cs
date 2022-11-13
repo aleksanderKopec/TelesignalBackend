@@ -17,12 +17,12 @@ public class AuthController : ControllerBase, IAuthController
     }
 
     [HttpPost("login")]
-    public async Task<IResult> Login(LoginDto loginDto) {
+    public async Task<ActionResult<object>> Login(LoginDto loginDto) {
         return await _authService.Login(loginDto);
     }
 
     [HttpPost("register")]
-    public async Task<IResult> Login(RegisterDto registerDto) {
+    public async Task<ActionResult<object>> Register(RegisterDto registerDto) {
         return await _authService.Register(registerDto);
     }
 }
