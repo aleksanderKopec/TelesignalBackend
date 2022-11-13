@@ -8,5 +8,6 @@ public class AuthUserMapperProfile : Profile
 {
     public AuthUserMapperProfile() {
         CreateMap<User, DatabaseModel.User>();
+        CreateMap<Email, DatabaseModel.Email>();
     }
 }

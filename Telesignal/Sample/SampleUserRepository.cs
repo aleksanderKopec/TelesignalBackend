@@ -12,23 +12,23 @@ public class SampleUserRepository : ISampleUserRepository
         _context = context;
     }
 
-    public async Task<User> Create(User entity) {
+    public Task<User> Create(User entity) {
         throw new NotImplementedException();
     }
 
-    public async Task<User> Delete(User entity) {
+    public Task<User> Delete(User entity) {
         throw new NotImplementedException();
     }
 
-    public async Task<User> Delete(int id) {
+    public Task<User> Delete(int id) {
         throw new NotImplementedException();
     }
 
-    public async Task<User> Update(User entity) {
+    public Task<User> Update(User entity) {
         throw new NotImplementedException();
     }
 
     public async Task<User> Find(string id) {
-        return await _context.Users.FindAsync(id);
+        return (await _context.Users!.FindAsync(id))!;
     }
 }

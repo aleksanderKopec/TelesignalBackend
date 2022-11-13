@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-namespace Telesignal.Auth.Model;
+﻿namespace Telesignal.Auth.Model;
 
 public class Email
 {
@@ -14,10 +12,9 @@ public class Email
     public string Domain { get; set; }
     public string Prefix { get; set; }
 
-    public Email Parse(string emailString, IPasswordHasher<Email> emailHasher) {
+    public static Email Parse(string emailString, string emailHash) {
         var domain = emailString[emailString.IndexOf("@", StringComparison.Ordinal)..];
         var prefix = emailString[..3];
-        var hash = emailHasher.HashPassword(null, emailString);
-        return new Email(hash, domain, prefix);
+        return new Email(emailHash, domain, prefix);
     }
 }
