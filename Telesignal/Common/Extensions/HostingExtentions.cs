@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Serilog;
 using Telesignal.Auth.Config;
+using Telesignal.Chat;
 using Telesignal.Common.Config;
 using Telesignal.Common.Database.EntityFramework;
 using Telesignal.Sample.Config;
@@ -31,7 +31,7 @@ public static class HostingExtensions
         AuthDependencyConfiguration.AddDependencies(builder.Services);
         return builder;
     }
-    
+
     public static WebApplicationBuilder ConfigureAuthentication(this WebApplicationBuilder builder) {
         var jwtAudience = builder.Configuration[AppSettings.JwtAudience];
         var jwtIssuer = builder.Configuration[AppSettings.JwtIssuer];
@@ -53,7 +53,7 @@ public static class HostingExtensions
         });
         return builder;
     }
-    
+
     public static WebApplicationBuilder ConfigureAuthorization(this WebApplicationBuilder builder) {
         builder.Services.AddAuthorization();
         return builder;
@@ -71,6 +71,11 @@ public static class HostingExtensions
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
+        return app;
+    }
+
+    public static WebApplication ConfigureSinglaR(this WebApplication app, string mainPath) {
+        app.MapHub<ChatHub>(mainPath);
         return app;
     }
 }
