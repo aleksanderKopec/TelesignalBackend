@@ -45,13 +45,8 @@
 
   <ItemGroup>
     <Folder Include="Chat\Config" />
-    <Folder Include="Chat\Interfaces" />
-    <Folder Include="Chat\Mapper" />
     <Folder Include="Common\Exceptions" />
     <Folder Include="Common\Extensions" />
-    <Folder Include="Sample\DTO" />
-    <Folder Include="Sample\Mappers" />
-    <Folder Include="Sample\Model" />
     <Folder Include="User" />
   </ItemGroup>
 

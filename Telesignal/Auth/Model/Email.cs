@@ -1,6 +1,9 @@
-﻿namespace Telesignal.Auth.Model;
+﻿using Telesignal.Common.Interfaces;
+using DatabaseModel = Telesignal.Common.Database.EntityFramework.Model;
 
-public class Email
+namespace Telesignal.Auth.Model;
+
+public class Email : ISaveable<Email, DatabaseModel.Email>
 {
 
     public Email(string hash, string domain, string prefix) {
@@ -11,6 +14,19 @@ public class Email
     public string Hash { get; set; }
     public string Domain { get; set; }
     public string Prefix { get; set; }
+
+    public DatabaseModel.Email ToModel() {
+        return new DatabaseModel.Email {
+            Hash = Hash,
+            Domain = Domain,
+            Prefix = Prefix
+        };
+    }
+
+    public static Email FromModel(DatabaseModel.Email model) {
+        return new Email(domain: model.Domain, hash: model.Hash, prefix: model.Prefix);
+    }
+
 
     public static Email Parse(string emailString, string emailHash) {
         var domain = emailString[emailString.IndexOf("@", StringComparison.Ordinal)..];

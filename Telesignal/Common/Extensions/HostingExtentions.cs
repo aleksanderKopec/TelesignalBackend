@@ -5,8 +5,8 @@ using Microsoft.IdentityModel.Tokens;
 using Telesignal.Auth.Config;
 using Telesignal.Chat;
 using Telesignal.Common.Config;
+using Telesignal.Common.Database.Config;
 using Telesignal.Common.Database.EntityFramework;
-using Telesignal.Sample.Config;
 
 namespace Telesignal.Common.Extensions;
 
@@ -27,7 +27,7 @@ public static class HostingExtensions
         builder.Services.AddSwaggerGen();
         builder.Services.AddSignalR();
         ConfigDependencyConfiguration.AddDependencies(builder.Services);
-        SampleDependencyConfiguration.AddDependencies(builder.Services);
+        DatabaseDependencyConfiguration.AddDependencies(builder.Services);
         AuthDependencyConfiguration.AddDependencies(builder.Services);
         return builder;
     }

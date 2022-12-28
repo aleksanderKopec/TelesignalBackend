@@ -9,7 +9,6 @@ namespace Telesignal.Auth.Config;
 public static class AuthDependencyConfiguration
 {
     public static void AddDependencies(IServiceCollection services) {
-        services.AddScoped<IAuthUserRepository, AuthUserRepository>();
         services.AddScoped<IAuthController, AuthController>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
