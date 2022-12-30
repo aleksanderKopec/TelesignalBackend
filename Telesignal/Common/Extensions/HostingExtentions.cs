@@ -26,9 +26,10 @@ public static class HostingExtensions
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddSignalR();
-        ConfigDependencyConfiguration.AddDependencies(builder.Services);
+        CommonDependencyConfiguration.AddDependencies(builder.Services);
         DatabaseDependencyConfiguration.AddDependencies(builder.Services);
         AuthDependencyConfiguration.AddDependencies(builder.Services);
+        ChatDependencyConfiguration.AddDependencies(builder.Services);
         return builder;
     }
 

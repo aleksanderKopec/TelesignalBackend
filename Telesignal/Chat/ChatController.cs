@@ -9,30 +9,30 @@ namespace Telesignal.Chat;
 [ApiController]
 [Authorize]
 [Route("/chat")]
-public class SampleController : ControllerBase
+public class ChatController : ControllerBase
 {
     readonly private IChatService _chatService;
 
-    public SampleController(IChatService chatService) {
+    public ChatController(IChatService chatService) {
         _chatService = chatService;
     }
 
-    [HttpGet("/room/{roomId:int}")]
+    [HttpGet("room/{roomId:int}")]
     public async Task<ActionResult<Room?>> GetRoom(int roomId) {
         return await _chatService.GetRoom(roomId);
     }
 
-    [HttpPut("/room")]
+    [HttpPut("room")]
     public async Task<ActionResult<Room>> CreateRoom(Room room) {
         return await _chatService.CreateRoom(room);
     }
 
-    [HttpDelete("/room/{roomId:int}")]
+    [HttpDelete("room/{roomId:int}")]
     public string DeleteRoom() {
         return "Delete room";
     }
 
-    [HttpPost("/room/{roomId:int}")]
+    [HttpPost("room/{roomId:int}")]
     public string ModifyRoom() {
         return "Hello world";
     }

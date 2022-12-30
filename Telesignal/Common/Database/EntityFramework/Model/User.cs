@@ -7,7 +7,7 @@ public class User : IDatabaseEntity
 {
     public int Id { get; set; }
 
-    public string Username { get; set; } = "Username";
+    public string Username { get; set; } = string.Empty;
     /// <summary>
     ///     Email information of user.
     /// </summary>
@@ -15,7 +15,7 @@ public class User : IDatabaseEntity
     /// <summary>
     ///     Hashed password
     /// </summary>
-    public string PasswordHash { get; set; } = "PasswordHash";
+    public string PasswordHash { get; set; } = string.Empty;
     /// <summary>
     ///     Profile of user. Contains user given information.
     /// </summary>
@@ -24,4 +24,6 @@ public class User : IDatabaseEntity
     ///     List of contacts (friends) of given user.
     /// </summary>
     public List<User> Contacts { get; set; } = new();
+    public List<Room> AdminOf { get; set; } = new();
+    public List<Room> MemberOf { get; set; } = new();
 }

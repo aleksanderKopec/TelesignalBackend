@@ -17,7 +17,10 @@ public class RoomRepository : IRoomRepository
     }
 
     public async Task<DatabaseModel.Room?> Find(int id) {
-        return await _context.Rooms.FindAsync(id);
+        return await _context.Rooms.Include(room => room.Admins)
+                             .Include(room => room.Members)
+                             .Where(room => room.Id == id)
+                             .FirstAsync();
     }
 
     public async Task<DatabaseModel.Room> Create(DatabaseModel.Room entity) {

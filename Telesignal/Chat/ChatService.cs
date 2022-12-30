@@ -15,20 +15,20 @@ public class ChatService : IChatService
 
 
     public ChatService(IMessageRepository messageRepository,
-                       IRoomRepository roomRepository) {
+                       IRoomRepository roomRepository, IUserRepository userRepository) {
         _messageRepository = messageRepository;
         _roomRepository = roomRepository;
+        _userRepository = userRepository;
     }
 
     public async Task<ActionResult<Room?>> GetRoom(int roomId) {
-//        return await _roomRepository.Find(roomId);
-        throw new NotImplementedException();
+        var foundRoom = await _roomRepository.Find(roomId);
+        return ModelToRoom(foundRoom!);
     }
 
     public async Task<ActionResult<Room>> CreateRoom(Room room) {
-//        var newRoom = new DatabaseModel.Room()
-//        return await _roomRepository.Create(room);
-        throw new NotImplementedException();
+        var savedRoom = await _roomRepository.Create(await RoomToModel(room));
+        return ModelToRoom(savedRoom);
     }
 
     public async Task<ActionResult<DatabaseModel.Message>> AddMessage(MessageWrapper message) {
@@ -50,5 +50,23 @@ public class ChatService : IChatService
 
     public async Task<ActionResult<List<DatabaseModel.Message>>> GetMessages(int roomId, int pageNo, int pageSize) {
         return await _messageRepository.GetMessages(roomId, pageNo, pageSize);
+    }
+
+    private async Task<DatabaseModel.Room> RoomToModel(Room room) {
+        var foundUser = await _userRepository.FindByUsername(room.Author);
+        return new DatabaseModel.Room {
+            Name = room.Name,
+            Admins = new List<DatabaseModel.User> { foundUser },
+            Members = new List<DatabaseModel.User> { foundUser },
+            Messages = new List<DatabaseModel.Message>()
+        };
+    }
+
+    private Room ModelToRoom(DatabaseModel.Room model) {
+        return new Room {
+            RoomId = model.Id,
+            Author = model.Admins[0].Username,
+            Name = model.Name
+        };
     }
 }

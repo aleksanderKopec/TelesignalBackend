@@ -22,6 +22,36 @@ namespace Telesignal.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("RoomUser", b =>
+                {
+                    b.Property<int>("AdminOfId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AdminsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AdminOfId", "AdminsId");
+
+                    b.HasIndex("AdminsId");
+
+                    b.ToTable("RoomUser");
+                });
+
+            modelBuilder.Entity("RoomUser1", b =>
+                {
+                    b.Property<int>("MemberOfId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MembersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MemberOfId", "MembersId");
+
+                    b.HasIndex("MembersId");
+
+                    b.ToTable("RoomUser1");
+                });
+
             modelBuilder.Entity("Telesignal.Common.Database.EntityFramework.Model.Email", b =>
                 {
                     b.Property<int>("Id")
@@ -136,9 +166,6 @@ namespace Telesignal.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("AdminsForeingKey")
-                        .HasColumnType("int");
-
                     b.Property<int>("EmailId")
                         .HasColumnType("int");
 
@@ -156,12 +183,7 @@ namespace Telesignal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("UsersForeingKey")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("AdminsForeingKey");
 
                     b.HasIndex("EmailId");
 
@@ -172,9 +194,37 @@ namespace Telesignal.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.HasIndex("UsersForeingKey");
-
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("RoomUser", b =>
+                {
+                    b.HasOne("Telesignal.Common.Database.EntityFramework.Model.Room", null)
+                        .WithMany()
+                        .HasForeignKey("AdminOfId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Telesignal.Common.Database.EntityFramework.Model.User", null)
+                        .WithMany()
+                        .HasForeignKey("AdminsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RoomUser1", b =>
+                {
+                    b.HasOne("Telesignal.Common.Database.EntityFramework.Model.Room", null)
+                        .WithMany()
+                        .HasForeignKey("MemberOfId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Telesignal.Common.Database.EntityFramework.Model.User", null)
+                        .WithMany()
+                        .HasForeignKey("MembersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Telesignal.Common.Database.EntityFramework.Model.Message", b =>
@@ -198,10 +248,6 @@ namespace Telesignal.Migrations
 
             modelBuilder.Entity("Telesignal.Common.Database.EntityFramework.Model.User", b =>
                 {
-                    b.HasOne("Telesignal.Common.Database.EntityFramework.Model.Room", null)
-                        .WithMany("Admins")
-                        .HasForeignKey("AdminsForeingKey");
-
                     b.HasOne("Telesignal.Common.Database.EntityFramework.Model.Email", "Email")
                         .WithMany()
                         .HasForeignKey("EmailId")
@@ -218,10 +264,6 @@ namespace Telesignal.Migrations
                         .WithMany("Contacts")
                         .HasForeignKey("UserId");
 
-                    b.HasOne("Telesignal.Common.Database.EntityFramework.Model.Room", null)
-                        .WithMany("Users")
-                        .HasForeignKey("UsersForeingKey");
-
                     b.Navigation("Email");
 
                     b.Navigation("Profile");
@@ -229,11 +271,7 @@ namespace Telesignal.Migrations
 
             modelBuilder.Entity("Telesignal.Common.Database.EntityFramework.Model.Room", b =>
                 {
-                    b.Navigation("Admins");
-
                     b.Navigation("Messages");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Telesignal.Common.Database.EntityFramework.Model.User", b =>

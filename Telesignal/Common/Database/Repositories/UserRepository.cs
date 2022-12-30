@@ -17,7 +17,10 @@ public class UserRepository : IUserRepository
     }
 
     public async Task<DatabaseModel.User?> Find(int id) {
-        return await _context.Users.FindAsync(id);
+        return await _context.Users
+                             .Include(user => user.MemberOf)
+                             .Where(user => user.Id == id)
+                             .FirstAsync();
     }
 
     public async Task<DatabaseModel.User> Create(DatabaseModel.User entity) {
