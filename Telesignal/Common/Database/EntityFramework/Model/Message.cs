@@ -1,5 +1,9 @@
-﻿namespace Telesignal.Common.Database.EntityFramework.Model;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
+namespace Telesignal.Common.Database.EntityFramework.Model;
+
+[Index(nameof(DateAdded))]
 public class Message : IDatabaseEntity
 {
 
@@ -7,13 +11,17 @@ public class Message : IDatabaseEntity
     /// <summary>
     ///     Author of the message.
     /// </summary>
-    public User Author { get; init; }
+    public User Author { get; init; } = new();
     /// <summary>
     ///     Room in which message has been send.
     /// </summary>
-    public Room Room { get; init; }
+    public Room Room { get; init; } = new();
     /// <summary>
     ///     Hashed and encrypted content of message.
     /// </summary>
-    public string Content { get; set; }
+    public string Content { get; set; } = string.Empty;
+
+    [Column(TypeName = "datetime2")] public DateTime DateAdded { get; set; } = DateTime.Now;
+
+    public string KeyMapJson { get; set; } = string.Empty;
 }

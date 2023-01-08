@@ -46,9 +46,7 @@
   <ItemGroup>
     <Folder Include="Common\Exceptions" />
     <Folder Include="Common\Extensions" />
-    <Folder Include="Sample\DTO" />
-    <Folder Include="Sample\Mappers" />
-    <Folder Include="Sample\Model" />
+    <Folder Include="Migrations" />
     <Folder Include="User" />
   </ItemGroup>
 

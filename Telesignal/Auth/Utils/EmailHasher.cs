@@ -21,7 +21,12 @@ public class EmailHasher : IEmailHasher
         return Email.Parse(email, emailHash);
     }
 
-    public bool CompareHash(Email email, string hash) {
-        throw new NotImplementedException();
+    public bool CompareHash(Email emailHash, string email) {
+        return _emailHasher.VerifyHashedPassword(DummyUser, emailHash.Hash, email) switch {
+            PasswordVerificationResult.Failed => false,
+            PasswordVerificationResult.Success => true,
+            PasswordVerificationResult.SuccessRehashNeeded => true,
+            _ => false
+        };
     }
 }

@@ -6,13 +6,16 @@ namespace Telesignal;
 
 public class Program
 {
+    private const string SIGNALR_PATH = "/chatHub";
+    private const string LOG_PATH = "logs/Telesignal.log";
+
     public static void Main(string[] args) {
         var builder = WebApplication.CreateBuilder(args);
 
         // Configure logging
         var configuration = new LoggerConfiguration()
                            .WriteTo.Console()
-                           .WriteTo.File("logs/Telesignal.log", rollingInterval: RollingInterval.Day);
+                           .WriteTo.File(LOG_PATH, rollingInterval: RollingInterval.Day);
         configuration = builder.Environment.IsDevelopment()
                             ? configuration.MinimumLevel.Debug()
                             : configuration.MinimumLevel.Information();
@@ -29,6 +32,7 @@ public class Program
                  .Build();
         app
            .ConfigurePipeline()
+           .ConfigureSinglaR(SIGNALR_PATH)
            .Run();
     }
 }
