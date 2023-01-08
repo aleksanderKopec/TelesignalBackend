@@ -42,15 +42,17 @@ public class AuthService : IAuthService
         }
         var passwordHash = _passwordHasher.HashPassword(registerDto.Password);
         var emailHash = _emailHasher.HashEmail(registerDto.Email);
+        var encodedKey = Convert.FromBase64String(registerDto.PublicKey);
         try {
             await _authUserRepository.Create(new User(
                                                      registerDto.Username,
                                                      Email.Parse(registerDto.Email, emailHash.Hash),
-                                                     passwordHash)
+                                                     passwordHash,
+                                                     encodedKey)
                                                 .ToModel());
         }
         catch (DbUpdateException e) {
-            Log.Logger.Error("User with this database already exists. StackTrace: {Stacktrace}", e.StackTrace);
+            Log.Logger.Error("User with this name already exists. StackTrace: {Stacktrace}", e.StackTrace);
             return new UnprocessableEntityObjectResult(RegisterResultMessages.UserAlreadyExists);
         }
         return new OkObjectResult(RegisterResultMessages.Success);

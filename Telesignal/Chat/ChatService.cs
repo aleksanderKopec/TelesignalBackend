@@ -32,12 +32,12 @@ public class ChatService : IChatService
     }
 
     public async Task<ActionResult<DatabaseModel.Message>> AddMessage(MessageWrapper message) {
-        var author = await _userRepository.Find(message.AuthorId);
-        var room = await _roomRepository.Find(message.RoomId);
+        var author = await _userRepository.Find(int.Parse(message.AuthorId));
+        var room = await _roomRepository.Find(int.Parse(message.RoomId));
         var messageModel = new DatabaseModel.Message {
             Author = author,
-            Content = message.MessageContent.Value,
-            KeyMapJson = JsonSerializer.Serialize(message.MessageContent.KeyMap),
+            Content = message.EncryptedMessage,
+            KeyMapJson = JsonSerializer.Serialize(message.KeyMap),
             Room = room
         };
         return await _messageRepository.Create(messageModel);
@@ -56,8 +56,8 @@ public class ChatService : IChatService
         var foundUser = await _userRepository.FindByUsername(room.Author);
         return new DatabaseModel.Room {
             Name = room.Name,
-            Admins = new List<DatabaseModel.User> { foundUser },
-            Members = new List<DatabaseModel.User> { foundUser },
+            Admins = new HashSet<DatabaseModel.User> { foundUser },
+            Members = new HashSet<DatabaseModel.User> { foundUser },
             Messages = new List<DatabaseModel.Message>()
         };
     }
@@ -65,7 +65,7 @@ public class ChatService : IChatService
     private Room ModelToRoom(DatabaseModel.Room model) {
         return new Room {
             RoomId = model.Id,
-            Author = model.Admins[0].Username,
+            Author = model.Admins.First().Username,
             Name = model.Name
         };
     }

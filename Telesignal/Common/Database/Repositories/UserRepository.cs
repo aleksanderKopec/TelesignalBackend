@@ -46,4 +46,11 @@ public class UserRepository : IUserRepository
                              .Where(it => it.Username == username)
                              .FirstOrDefaultAsync();
     }
+
+    public async Task<DatabaseModel.User?> FindByEmail(string emailHash) {
+        return await _context.Users
+                             .Include(user => user.Email)
+                             .Where(user => user.Email.Hash == emailHash)
+                             .FirstOrDefaultAsync();
+    }
 }

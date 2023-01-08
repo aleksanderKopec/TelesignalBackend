@@ -12,8 +12,8 @@ using Telesignal.Common.Database.EntityFramework;
 namespace Telesignal.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20221230135216_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230108164006_ChangePublicKeyFormat")]
+    partial class ChangePublicKeyFormat
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -177,6 +177,10 @@ namespace Telesignal.Migrations
 
                     b.Property<int>("ProfileId")
                         .HasColumnType("int");
+
+                    b.Property<byte[]>("PublicKey")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");

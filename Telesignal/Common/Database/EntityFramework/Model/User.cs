@@ -26,4 +26,6 @@ public class User : IDatabaseEntity
     public List<User> Contacts { get; set; } = new();
     public List<Room> AdminOf { get; set; } = new();
     public List<Room> MemberOf { get; set; } = new();
+
+    public byte[] PublicKey { get; set; } = Array.Empty<byte>();
 }

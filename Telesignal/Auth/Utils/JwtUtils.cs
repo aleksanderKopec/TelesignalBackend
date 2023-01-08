@@ -35,7 +35,7 @@ public class JwtUtils : IJwtUtils
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var stringToken = tokenHandler.WriteToken(token);
-            return new TokenDto(stringToken);
+            return new TokenDto(stringToken, user.Id);
         });
     }
 }

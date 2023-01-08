@@ -7,4 +7,6 @@ public interface IUserRepository : IAsyncRepository<User>
 {
 
     Task<User?> FindByUsername(string username);
+
+    Task<User?> FindByEmail(string email);
 }

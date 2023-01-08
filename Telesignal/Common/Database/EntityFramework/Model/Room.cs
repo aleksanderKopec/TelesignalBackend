@@ -9,7 +9,7 @@ public class Room : IDatabaseEntity
     public string Name { get; set; } = string.Empty;
     public List<Message> Messages { get; set; } = new();
 
-    public virtual List<User> Members { get; set; } = new();
+    public virtual HashSet<User> Members { get; set; } = new();
 
-    public virtual List<User> Admins { get; set; } = new();
+    public virtual HashSet<User> Admins { get; set; } = new();
 }

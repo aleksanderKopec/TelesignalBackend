@@ -5,7 +5,15 @@ namespace Telesignal.Chat.Model;
 
 public class MessageWrapper
 {
-    public int AuthorId { get; set; } = -1;
-    public int RoomId { get; set; } = -1;
-    public MessageContent MessageContent { get; set; } = new();
+    public string AuthorId { get; set; } = string.Empty;
+    public string RoomId { get; set; } = string.Empty;
+    public string EncryptedMessage { get; set; } = string.Empty;
+    public KeyMap KeyMap { get; set; } = new();
+
+    public override string ToString() {
+        return $"AuthorId: {AuthorId}" +
+               $"RoomId: {RoomId}" +
+               $"EncryptedMessage: ${EncryptedMessage}" +
+               $"KeyMap: ${KeyMap}";
+    }
 }

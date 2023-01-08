@@ -5,5 +5,5 @@ namespace Telesignal.Common.Database.Repositories.Interfaces;
 
 public interface IRoomRepository : IAsyncRepository<Room>
 {
-    Task<Room> FindByRoomName(string roomName);
+    Task<Room?> FindByRoomName(string roomName);
 }

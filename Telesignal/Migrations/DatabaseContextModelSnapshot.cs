@@ -176,6 +176,10 @@ namespace Telesignal.Migrations
                     b.Property<int>("ProfileId")
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("PublicKey")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
