@@ -48,7 +48,7 @@ public class ChatHub : Hub
         }
         room.Members.Add(user!);
         var keyMap = GetRoomKeyMap(room);
-        await _roomRepository.Update(room);
+        var updatedRoom = await _roomRepository.Update(room);
         await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
         await Clients.Caller.SendAsync("ConnectToRoom", room.Id);
         await Clients.Group(roomName).SendAsync("GetRoomKeyMap", room.Id.ToString(), keyMap);

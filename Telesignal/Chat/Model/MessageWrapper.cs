@@ -5,6 +5,8 @@ namespace Telesignal.Chat.Model;
 
 public class MessageWrapper
 {
+
+    public string AuthorName { get; set; } = string.Empty;
     public string AuthorId { get; set; } = string.Empty;
     public string RoomId { get; set; } = string.Empty;
     public string EncryptedMessage { get; set; } = string.Empty;
