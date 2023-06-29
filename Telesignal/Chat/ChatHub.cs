@@ -26,15 +26,16 @@ public class ChatHub : Hub
 
     public async Task SendMessage(MessageWrapper message) {
         Log.Information("Got message: ${Message}, with key map: ${KeyMap}", message, message.KeyMap);
+        var room = await _roomRepository.Find(int.Parse(message.RoomId));
         var model = new Message {
             Author = await _userRepository.Find(int.Parse(message.AuthorId)),
             Content = message.EncryptedMessage,
             DateAdded = DateTime.Now,
             KeyMapJson = JsonSerializer.Serialize(message.KeyMap),
-            Room = await _roomRepository.Find(int.Parse(message.RoomId))
+            Room = room
         };
         await _messageRepository.Create(model);
-        await Clients.All.SendAsync("ReceiveMessage", message);
+        await Clients.Group(room.Name).SendAsync("ReceiveMessage", message);
     }
 
     public async Task ConnectToRoom(string roomName, string userId) {
@@ -47,7 +48,7 @@ public class ChatHub : Hub
         }
         room.Members.Add(user!);
         var keyMap = GetRoomKeyMap(room);
-        await _roomRepository.Update(room);
+        var updatedRoom = await _roomRepository.Update(room);
         await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
         await Clients.Caller.SendAsync("ConnectToRoom", room.Id);
         await Clients.Group(roomName).SendAsync("GetRoomKeyMap", room.Id.ToString(), keyMap);

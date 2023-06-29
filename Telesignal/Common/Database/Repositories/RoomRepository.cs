@@ -43,6 +43,8 @@ public class RoomRepository : IRoomRepository
 
     public async Task<DatabaseModel.Room?> FindByRoomName(string roomName) {
         return await _context.Rooms
+                             .Include(room => room.Admins)
+                             .Include(room => room.Members)
                              .Where(it => it.Name == roomName)
                              .FirstOrDefaultAsync();
     }
